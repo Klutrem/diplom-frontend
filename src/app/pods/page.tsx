@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Head from "next/head";
+import Table from "@/components/table";
 import { useNamespace } from "@/components/namespaceContext";
 
 // Интерфейс ответа от бэкенда
@@ -19,25 +20,6 @@ interface Pod {
   memory_usage_limit: number;
   memory_usage_request: number;
 }
-
-// Функция для получения классов стилей в зависимости от статуса
-function getStatusClass(status: string) {
-  switch (status) {
-    case "Running":
-      return "bg-green-200 text-green-800";
-    case "Pending":
-      return "bg-yellow-200 text-yellow-800";
-      case "Succeeded":
-        return "bg-blue-200 text-blue-800";
-      case "Failed":
-        return "bg-red-200 text-red-800";
-      case "Unknown":
-        return "bg-gray-200 text-gray-800";
-      default:
-        return "bg-gray-200 text-gray-800";
-    }
-  };
-
 
 export default function Pods() {
   const [pods, setPods] = useState<Pod[]>([]);
@@ -72,7 +54,6 @@ export default function Pods() {
     return () => clearInterval(interval);
   }, []);
 
-  // Функция для форматирования аптайма
   const formatUptime = (startTime: string) => {
     const start = new Date(startTime);
     const now = currentTime;
@@ -97,7 +78,6 @@ export default function Pods() {
     }
   };
 
-  // Функция для форматирования использования ресурсов
   const formatUsage = (usage: number, limit: number, request: number, percent: number) => {
     const parts = [];
     if (usage > 0) parts.push(`${usage}Mi`);
@@ -107,6 +87,35 @@ export default function Pods() {
     return parts.length > 0 ? parts.join(", ") : "N/A";
   };
 
+  const columns = [
+    { key: "pod_name", header: "Pod Name" },
+    { key: "status", header: "Status", render: (value: string) => (
+      <span
+        className={`py-1 px-3 rounded-full text-xs ${
+          value === "Running"
+            ? "bg-green-200 text-green-800"
+            : value === "Pending"
+            ? "bg-yellow-200 text-yellow-800"
+            : value === "Succeeded"
+            ? "bg-blue-200 text-blue-800"
+            : value === "Failed"
+            ? "bg-red-200 text-red-800"
+            : "bg-gray-200 text-gray-800"
+        }`}
+      >
+        {value}
+      </span>
+    )},
+    { key: "namespace", header: "Namespace" },
+    { key: "node_name", header: "Node" },
+    { key: "start_time", header: "Uptime", render: (value: string) => formatUptime(value) },
+    { key: "cpu_usage", header: "CPU Usage", render: (value: number, item: Pod) =>
+      formatUsage(value, item.cpu_usage_limit, item.cpu_usage_request, item.cpu_usage_percent)
+    },
+    { key: "memory_usage", header: "Memory Usage", render: (value: number, item: Pod) =>
+      formatUsage(value, item.memory_usage_limit, item.memory_usage_request, item.memory_usage_percent)
+    },
+  ];
 
   return (
     <>
@@ -115,69 +124,9 @@ export default function Pods() {
         <meta name="description" content="Pods monitoring dashboard" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className="container mx-auto p-4">
-        <h1 className="text-3xl font-bold mb-6 text-center text-black">Pods</h1>
-
-        {loading && <p className="text-center">Loading...</p>}
-        {error && <p className="text-red-500 text-center">Error: {error}</p>}
-
-        {!loading && !error && (
-          <div className="overflow-x-auto">
-            <table className="min-w-full bg-white shadow-md rounded-lg">
-              <thead>
-                <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                  <th className="py-3 px-6 text-left">Pod Name</th>
-                  <th className="py-3 px-6 text-left">Namespace</th>
-                  <th className="py-3 px-6 text-left">Node</th>
-                  <th className="py-3 px-6 text-left">Status</th>
-                  <th className="py-3 px-6 text-left">Uptime</th>
-                  <th className="py-3 px-6 text-left">CPU Usage</th>
-                  <th className="py-3 px-6 text-left">Memory Usage</th>
-                </tr>
-              </thead>
-              <tbody className="text-gray-600 text-sm font-light">
-                {pods.map((pod) => (
-                  <tr
-                    key={pod.pod_name}
-                    className="border-b border-gray-200 hover:bg-gray-100"
-                  >
-                    <td className="py-3 px-6 text-left whitespace-nowrap">
-                      {pod.pod_name}
-                    </td>
-                    <td className="py-3 px-6 text-left">{pod.namespace}</td>
-                    <td className="py-3 px-6 text-left">{pod.node_name}</td>
-                    <td className="py-3 px-6 text-left">
-                      <span
-                        className={`py-1 px-3 rounded-full text-xs ${getStatusClass(pod.status)}`}
-                      >
-                        {pod.status}
-                      </span>
-                    </td>
-                    <td className="py-3 px-6 text-left">{formatUptime(pod.start_time)}</td>
-                    <td className="py-3 px-6 text-left">
-                      {formatUsage(
-                        pod.cpu_usage,
-                        pod.cpu_usage_limit,
-                        pod.cpu_usage_request,
-                        pod.cpu_usage_percent
-                      )}
-                    </td>
-                    <td className="py-3 px-6 text-left">
-                      {formatUsage(
-                        pod.memory_usage,
-                        pod.memory_usage_limit,
-                        pod.memory_usage_request,
-                        pod.memory_usage_percent
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </main>
+      {loading && <p className="text-center">Loading...</p>}
+      {error && <p className="text-red-500 text-center">Error: {error}</p>}
+      {!loading && !error && <Table title="Pods" data={pods} columns={columns} />}
     </>
   );
 }

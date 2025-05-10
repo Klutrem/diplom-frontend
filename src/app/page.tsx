@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Head from "next/head";
+import Table from "@/components/table";
 
 // Интерфейс ответа от бэкенда
 interface Node {
@@ -15,7 +16,7 @@ interface Node {
   memory_capacity: string;
 }
 
-export default function Home({ showSidebar = true }: { showSidebar?: boolean }) {
+export default function Home() {
   const [nodes, setNodes] = useState<Node[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -39,6 +40,26 @@ export default function Home({ showSidebar = true }: { showSidebar?: boolean }) 
     fetchNodes();
   }, []);
 
+  const columns = [
+    { key: "name", header: "Name" },
+    { key: "status", header: "Status", render: (value: string) => (
+      <span
+        className={`py-1 px-3 rounded-full text-xs ${
+          value === "Ready" ? "bg-green-200 text-green-800" : "bg-red-200 text-red-800"
+        }`}
+      >
+        {value}
+      </span>
+    )},
+    { key: "roles", header: "Roles", render: (value: string[]) => value.join(", ") },
+    { key: "cpu_usage", header: "CPU Usage", render: (value: string, item: Node) => (
+      `${value} / ${item.cpu_capacity} (${item.cpu_usage_percentage}%)`
+    )},
+    { key: "memory_usage", header: "Memory Usage", render: (value: string, item: Node) => (
+      `${value} / ${item.memory_capacity} (${item.memory_usage_percentage}%)`
+    )},
+  ];
+
   return (
     <>
       <Head>
@@ -46,57 +67,9 @@ export default function Home({ showSidebar = true }: { showSidebar?: boolean }) 
         <meta name="description" content="Nodes monitoring dashboard" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className={`container mx-auto p-4 bg-white shadow-md rounded-lg ${showSidebar ? "ml-64" : ""}`}>
-        <h1 className="text-3xl font-bold mb-6 text-center text-black">Nodes</h1>
-
-        {loading && <p className="text-center">Loading...</p>}
-        {error && <p className="text-red-500 text-center">Error: {error}</p>}
-
-        {!loading && !error && (
-          <div className="overflow-x-auto">
-            <table className="min-w-full bg-white shadow-md rounded-lg">
-              <thead>
-                <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                  <th className="py-3 px-6 text-left">Name</th>
-                  <th className="py-3 px-6 text-left">Status</th>
-                  <th className="py-3 px-6 text-left">Roles</th>
-                  <th className="py-3 px-6 text-left">CPU Usage</th>
-                  <th className="py-3 px-6 text-left">Memory Usage</th>
-                </tr>
-              </thead>
-              <tbody className="text-gray-600 text-sm font-light">
-                {nodes.map((node) => (
-                  <tr
-                    key={node.name}
-                    className="border-b border-gray-200 hover:bg-gray-100"
-                  >
-                    <td className="py-3 px-6 text-left whitespace-nowrap">
-                      {node.name}
-                    </td>
-                    <td className="py-3 px-6 text-left">
-                      <span
-                        className={`py-1 px-3 rounded-full text-xs ${
-                          node.status === "Ready"
-                            ? "bg-green-200 text-green-800"
-                            : "bg-red-200 text-red-800"
-                        }`}
-                      >
-                        {node.status}
-                      </span>
-                    </td>
-                    <td className="py-3 px-6 text-left">
-                      {node.roles.join(", ")}
-                    </td>
-                    <td className="py-3 px-6 text-left">{`${node.cpu_usage} / ${node.cpu_capacity} (${node.cpu_usage_percentage}%)`}</td>
-                    <td className="py-3 px-6 text-left">{`${node.memory_usage} / ${node.memory_capacity} (${node.memory_usage_percentage}%)`}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </main>
+      {loading && <p className="text-center">Loading...</p>}
+      {error && <p className="text-red-500 text-center">Error: {error}</p>}
+      {!loading && !error && <Table title="Nodes" data={nodes} columns={columns} />}
     </>
   );
 }

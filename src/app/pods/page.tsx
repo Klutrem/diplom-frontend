@@ -19,6 +19,7 @@ interface Pod {
   memory_usage_percent: number;
   memory_usage_limit: number;
   memory_usage_request: number;
+  restart_count: number;
 }
 
 export default function Pods() {
@@ -50,7 +51,7 @@ export default function Pods() {
   }, [selectedNamespace]);
 
   useEffect(() => {
-    const interval = setInterval(() => setCurrentTime(new Date()), 60000);
+    const interval = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -115,6 +116,7 @@ export default function Pods() {
     { key: "memory_usage", header: "Memory Usage", render: (value: number, item: Pod) =>
       formatUsage(value, item.memory_usage_limit, item.memory_usage_request, item.memory_usage_percent)
     },
+    { key: "restart_count", header: "Restart Count" },
   ];
 
   return (

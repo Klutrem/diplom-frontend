@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useNamespace } from './namespaceContext';
@@ -40,6 +40,17 @@ export default function Sidebar() {
                   }`}
                 >
                   Nodes
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link href="/events">
+                <span
+                  className={`block p-2 text-gray-600 hover:bg-gray-200 rounded-md ${
+                    pathname === '/events' ? 'bg-gray-300' : ''
+                  }`}
+                >
+                  Events
                 </span>
               </Link>
             </li>

@@ -10,18 +10,19 @@ interface TableProps<T> {
   title: string;
   data: T[];
   columns: Column<T>[];
+  responsive?: boolean; // Optional prop to enable responsive behavior
 }
 
-export default function Table<T>({ title, data, columns }: TableProps<T>) {
+export default function Table<T>({ title, data, columns, responsive = false }: TableProps<T>) {
   return (
-    <div className="container mx-auto p-4">
+    <div className={`container mx-auto p-4 ${responsive ? 'max-w-full' : ''}`}>
       <h1 className="text-3xl font-bold mb-6 text-center text-black">{title}</h1>
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white shadow-md rounded-lg">
+      <div className={`overflow-x-auto ${responsive ? 'md:overflow-x-visible' : ''}`}>
+        <table className={`min-w-full max-w-full bg-white shadow-md rounded-lg ${responsive ? 'table-auto' : ''}`}>
           <thead>
             <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
               {columns.map((col) => (
-                <th key={String(col.key)} className="py-3 px-6 text-left">
+                <th key={String(col.key)} className={`py-3 px-6 text-left ${responsive ? 'md:px-6 px-2' : ''}`}>
                   {col.header}
                 </th>
               ))}
@@ -31,7 +32,7 @@ export default function Table<T>({ title, data, columns }: TableProps<T>) {
             {data.map((item, index) => (
               <tr key={index} className="border-b border-gray-200 hover:bg-gray-100">
                 {columns.map((col) => (
-                  <td key={String(col.key)} className="py-3 px-6 text-left">
+                  <td key={String(col.key)} className={`py-3 px-6 text-left ${responsive ? 'md:px-6 px-2 truncate' : ''}`}>
                     {col.render ? (
                       col.render(item[col.key], item)
                     ) : (

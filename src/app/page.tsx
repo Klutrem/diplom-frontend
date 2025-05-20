@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import Table from "@/components/table";
+import getConfig from "@/config";
 
 // Интерфейс ответа от бэкенда
 interface Node {
@@ -24,7 +25,7 @@ export default function Home() {
   useEffect(() => {
     const fetchNodes = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/nodes");
+        const response = await fetch(`${getConfig().backendBaseUrl}/api/nodes`);
         if (!response.ok) {
           throw new Error("Failed to fetch nodes");
         }

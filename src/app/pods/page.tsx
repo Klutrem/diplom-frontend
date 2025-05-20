@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Head from "next/head";
 import Table from "@/components/table";
 import { useNamespace } from "@/components/namespaceContext";
+import getConfig from "@/config";
 
 // Интерфейс ответа от бэкенда
 interface Pod {
@@ -33,7 +34,7 @@ export default function Pods() {
     const fetchPods = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/pods?namespace=${selectedNamespace}`
+          `${getConfig().backendBaseUrl}/api/pods?namespace=${selectedNamespace}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch pods");

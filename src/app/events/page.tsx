@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import Table from "@/components/table";
+import getConfig from "@/config";
 
 // Интерфейс события из API
 interface Event {
@@ -36,7 +37,7 @@ export default function Events() {
           queryParams.append("type", typeFilter);
         }
 
-        const response = await fetch(`http://localhost:3000/api/events?${queryParams.toString()}`);
+        const response = await fetch(`${getConfig().backendBaseUrl}/api/events?${queryParams.toString()}`);
         if (!response.ok) {
           throw new Error("Не удалось загрузить события");
         }

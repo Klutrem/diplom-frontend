@@ -1,6 +1,6 @@
 "use client"
-import getConfig from '@/config';
 import { createContext, useState, useEffect, useContext } from 'react';
+import { getNamespaces } from '@/app/actions/namespaces';
 
 interface NamespaceContextType {
   namespaces: string[];
@@ -16,18 +16,14 @@ export const NamespaceProvider = ({ children }: { children: React.ReactNode }) =
 
   useEffect(() => {
     const fetchNamespaces = async () => {
-      try {
-        const response = await fetch(`${getConfig().backendBaseUrl}/api/namespaces`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch namespaces');
-        }
-        const data: string[] = await response.json();
-        setNamespaces(data);
-        if (data.length > 0) {
-          setSelectedNamespace(data[0]);
-        }
-      } catch (err) {
-        console.error(err);
+      const result = await getNamespaces();
+      if (result.error) {
+        console.error(result.error);
+        return;
+      }
+      setNamespaces(result.namespaces);
+      if (result.namespaces.length > 0) {
+        setSelectedNamespace(result.namespaces[0]);
       }
     };
 

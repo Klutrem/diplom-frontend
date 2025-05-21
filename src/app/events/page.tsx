@@ -2,56 +2,26 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import Table from "@/components/table";
-import getConfig from "@/config";
-
-// Интерфейс события из API
-interface Event {
-  id: string;
-  namespace: string;
-  name: string;
-  reason: string;
-  message: string;
-  type: string;
-  involved_object: string;
-  first_timestamp: string;
-  last_timestamp: string;
-  count: number;
-}
+import { getEvents, type Event } from "@/app/actions/events";
 
 export default function Events() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [typeFilter, setTypeFilter] = useState<string>(""); // Фильтр по type
-  const selectedNamespace = "default"; // Можно заменить на динамический выбор из контекста
+  const [typeFilter, setTypeFilter] = useState<string>("");
+  const selectedNamespace = "default";
 
   useEffect(() => {
     const fetchEvents = async () => {
-      try {
-        // Формируем query-параметры, добавляя type, только если он задан
-        const queryParams = new URLSearchParams({
-          namespace: selectedNamespace,
-          limit: "100",
-        });
-        if (typeFilter) {
-          queryParams.append("type", typeFilter);
-        }
-
-        const response = await fetch(`${getConfig().backendBaseUrl}/api/events?${queryParams.toString()}`);
-        if (!response.ok) {
-          throw new Error("Не удалось загрузить события");
-        }
-        const data = await response.json();
-        setEvents(data.events);
-        setLoading(false);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Неизвестная ошибка");
-        setLoading(false);
-      }
+      setLoading(true);
+      const result = await getEvents(selectedNamespace, typeFilter || undefined);
+      setEvents(result.events);
+      setError(result.error);
+      setLoading(false);
     };
 
     fetchEvents();
-  }, [selectedNamespace, typeFilter]); // Обновляем при изменении typeFilter
+  }, [selectedNamespace, typeFilter]);
 
   // Форматирование времени
   const formatTime = (timestamp: string) => {
@@ -62,14 +32,14 @@ export default function Events() {
 
   // Определение колонок таблицы
   const columns = [
-    { key: "name", header: "Имя" },
-    { key: "namespace", header: "Namespace" },
-    { key: "reason", header: "Причина" },
-    { key: "message", header: "Сообщение" },
+    { key: "name" as keyof Event, header: "Имя" },
+    { key: "namespace" as keyof Event, header: "Namespace" },
+    { key: "reason" as keyof Event, header: "Причина" },
+    { key: "message" as keyof Event, header: "Сообщение" },
     {
-      key: "type",
+      key: "type" as keyof Event,
       header: "Тип",
-      render: (value: string) => (
+      render: (value: string | number, item: Event) => (
         <span
           className={`py-1 px-3 rounded-full text-xs ${
             value === "Normal"
@@ -83,18 +53,18 @@ export default function Events() {
         </span>
       ),
     },
-    { key: "involved_object", header: "Объект" },
+    { key: "involved_object" as keyof Event, header: "Объект" },
     {
-      key: "first_timestamp",
+      key: "first_timestamp" as keyof Event,
       header: "Первое время",
-      render: (value: string) => formatTime(value),
+      render: (value: string | number, item: Event) => formatTime(value as string),
     },
     {
-      key: "last_timestamp",
+      key: "last_timestamp" as keyof Event,
       header: "Последнее время",
-      render: (value: string) => formatTime(value),
+      render: (value: string | number, item: Event) => formatTime(value as string),
     },
-    { key: "count", header: "Количество" },
+    { key: "count" as keyof Event, header: "Количество" },
   ];
 
   return (

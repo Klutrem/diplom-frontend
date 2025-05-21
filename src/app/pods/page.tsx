@@ -3,25 +3,7 @@ import { useEffect, useState } from "react";
 import Head from "next/head";
 import Table from "@/components/table";
 import { useNamespace } from "@/components/namespaceContext";
-import getConfig from "@/config";
-
-// Интерфейс ответа от бэкенда
-interface Pod {
-  pod_name: string;
-  namespace: string;
-  node_name: string;
-  status: string;
-  start_time: string;
-  cpu_usage: number;
-  cpu_usage_percent: number;
-  cpu_usage_limit: number;
-  cpu_usage_request: number;
-  memory_usage: number;
-  memory_usage_percent: number;
-  memory_usage_limit: number;
-  memory_usage_request: number;
-  restart_count: number;
-}
+import { getPods, type Pod } from "@/app/actions/pods";
 
 export default function Pods() {
   const [pods, setPods] = useState<Pod[]>([]);
@@ -32,20 +14,11 @@ export default function Pods() {
 
   useEffect(() => {
     const fetchPods = async () => {
-      try {
-        const response = await fetch(
-          `${getConfig().backendBaseUrl}/api/pods?namespace=${selectedNamespace}`
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch pods");
-        }
-        const data: Pod[] = await response.json();
-        setPods(data);
-        setLoading(false);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Unknown error");
-        setLoading(false);
-      }
+      setLoading(true);
+      const result = await getPods(selectedNamespace);
+      setPods(result.pods);
+      setError(result.error);
+      setLoading(false);
     };
 
     fetchPods();
@@ -90,34 +63,58 @@ export default function Pods() {
   };
 
   const columns = [
-    { key: "pod_name", header: "Pod Name" },
-    { key: "status", header: "Status", render: (value: string) => (
-      <span
-        className={`py-1 px-3 rounded-full text-xs ${
-          value === "Running"
-            ? "bg-green-200 text-green-800"
-            : value === "Pending"
-            ? "bg-yellow-200 text-yellow-800"
-            : value === "Succeeded"
-            ? "bg-blue-200 text-blue-800"
-            : value === "Failed"
-            ? "bg-red-200 text-red-800"
-            : "bg-gray-200 text-gray-800"
-        }`}
-      >
-        {value}
-      </span>
-    )},
-    { key: "namespace", header: "Namespace" },
-    { key: "node_name", header: "Node" },
-    { key: "start_time", header: "Uptime", render: (value: string) => formatUptime(value) },
-    { key: "cpu_usage", header: "CPU Usage", render: (value: number, item: Pod) =>
-      formatUsage(value, item.cpu_usage_limit, item.cpu_usage_request, item.cpu_usage_percent)
+    { key: "pod_name" as keyof Pod, header: "Pod Name" },
+    { 
+      key: "status" as keyof Pod, 
+      header: "Status", 
+      render: (value: string | number, item: Pod) => (
+        <span
+          className={`py-1 px-3 rounded-full text-xs ${
+            value === "Running"
+              ? "bg-green-200 text-green-800"
+              : value === "Pending"
+              ? "bg-yellow-200 text-yellow-800"
+              : value === "Succeeded"
+              ? "bg-blue-200 text-blue-800"
+              : value === "Failed"
+              ? "bg-red-200 text-red-800"
+              : "bg-gray-200 text-gray-800"
+          }`}
+        >
+          {value}
+        </span>
+      )
     },
-    { key: "memory_usage", header: "Memory Usage", render: (value: number, item: Pod) =>
-      formatUsage(value, item.memory_usage_limit, item.memory_usage_request, item.memory_usage_percent)
+    { key: "namespace" as keyof Pod, header: "Namespace" },
+    { key: "node_name" as keyof Pod, header: "Node" },
+    { 
+      key: "start_time" as keyof Pod, 
+      header: "Uptime", 
+      render: (value: string | number, item: Pod) => formatUptime(value as string) 
     },
-    { key: "restart_count", header: "Restart Count" },
+    { 
+      key: "cpu_usage" as keyof Pod, 
+      header: "CPU Usage", 
+      render: (value: string | number, item: Pod) =>
+        formatUsage(
+          value as number, 
+          item.cpu_usage_limit, 
+          item.cpu_usage_request, 
+          item.cpu_usage_percent
+        )
+    },
+    { 
+      key: "memory_usage" as keyof Pod, 
+      header: "Memory Usage", 
+      render: (value: string | number, item: Pod) =>
+        formatUsage(
+          value as number, 
+          item.memory_usage_limit, 
+          item.memory_usage_request, 
+          item.memory_usage_percent
+        )
+    },
+    { key: "restart_count" as keyof Pod, header: "Restart Count" },
   ];
 
   return (

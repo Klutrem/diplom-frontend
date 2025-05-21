@@ -3,13 +3,29 @@ import { useEffect, useState } from "react";
 import Head from "next/head";
 import Table from "@/components/table";
 import { getEvents, type Event } from "@/app/actions/events";
+import { getWatchedNamespaces, addWatchedNamespace, removeWatchedNamespace } from "@/app/actions/watchedNamespaces";
+import { useNamespace } from "@/components/namespaceContext";
 
 export default function Events() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [typeFilter, setTypeFilter] = useState<string>("");
-  const selectedNamespace = "default";
+  const [watchedNamespaces, setWatchedNamespaces] = useState<string[]>([]);
+  const { selectedNamespace, namespaces } = useNamespace();
+
+  useEffect(() => {
+    const fetchWatchedNamespaces = async () => {
+      const result = await getWatchedNamespaces();
+      if (result.error) {
+        console.error(result.error);
+        return;
+      }
+      setWatchedNamespaces(result.watchedNamespaces);
+    };
+
+    fetchWatchedNamespaces();
+  }, []);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -22,6 +38,24 @@ export default function Events() {
 
     fetchEvents();
   }, [selectedNamespace, typeFilter]);
+
+  const handleToggleWatchedNamespace = async (namespace: string) => {
+    const isWatched = watchedNamespaces.includes(namespace);
+    const action = isWatched ? removeWatchedNamespace : addWatchedNamespace;
+    
+    const result = await action(namespace);
+    if (result.error) {
+      console.error(result.error);
+      return;
+    }
+
+    // Update local state
+    setWatchedNamespaces(prev => 
+      isWatched 
+        ? prev.filter(ns => ns !== namespace)
+        : [...prev, namespace]
+    );
+  };
 
   // Форматирование времени
   const formatTime = (timestamp: string) => {
@@ -76,21 +110,43 @@ export default function Events() {
       </Head>
 
       <div className="container mx-auto p-4">
-        {/* Фильтр по type */}
-        <div className="mb-6">
-          <label htmlFor="typeFilter" className="block text-sm font-medium text-gray-700 mb-2">
-            Фильтр по типу
-          </label>
-          <select
-            id="typeFilter"
-            value={typeFilter}
-            onChange={(e) => setTypeFilter(e.target.value)}
-            className="block w-full max-w-xs p-2 border border-gray-300 rounded-md bg-white text-gray-700 focus:ring-blue-500 focus:border-blue-500"
-          >
-            <option value="">All</option>
-            <option value="Normal">Normal</option>
-            <option value="Warning">Warning</option>
-          </select>
+        <div className="mb-6 space-y-4">
+          {/* Фильтр по type */}
+          <div>
+            <label htmlFor="typeFilter" className="block text-sm font-medium text-gray-700 mb-2">
+              Фильтр по типу
+            </label>
+            <select
+              id="typeFilter"
+              value={typeFilter}
+              onChange={(e) => setTypeFilter(e.target.value)}
+              className="block w-full max-w-xs p-2 border border-gray-300 rounded-md bg-white text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="">All</option>
+              <option value="Normal">Normal</option>
+              <option value="Warning">Warning</option>
+            </select>
+          </div>
+
+          {/* Watched Namespaces */}
+          <div>
+            <h3 className="text-sm font-medium text-gray-700 mb-2">Отслеживаемые namespace</h3>
+            <div className="flex flex-wrap gap-2">
+              {namespaces.map((namespace) => (
+                <button
+                  key={namespace}
+                  onClick={() => handleToggleWatchedNamespace(namespace)}
+                  className={`px-3 py-1 rounded-full text-sm ${
+                    watchedNamespaces.includes(namespace)
+                      ? "bg-blue-500 text-white hover:bg-blue-600"
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  }`}
+                >
+                  {namespace}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         {loading && <p className="text-center">Загрузка...</p>}

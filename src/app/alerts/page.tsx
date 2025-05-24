@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertCircle, Trash2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function AlertsPage() {
   const [namespaces, setNamespaces] = useState<string[]>([]);
@@ -110,11 +111,11 @@ export default function AlertsPage() {
                   onValueChange={setSelectedNamespace}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select namespace" className="text-sm text-gray-500" />
+                    <SelectValue placeholder="Select namespace" className="text-sm text-gray-900" />
                   </SelectTrigger>
                   <SelectContent>
                     {namespaces.map((ns, index) => (
-                      <SelectItem className="text-sm text-gray-500" key={`namespace-${index}`} value={ns || `default-${index}`}>
+                      <SelectItem className="text-sm text-gray-900" key={`namespace-${index}`} value={ns || `default-${index}`}>
                         {ns}
                       </SelectItem>
                     ))}
@@ -129,6 +130,7 @@ export default function AlertsPage() {
                   value={formData.botToken}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, botToken: e.target.value })}
                   required
+                  className="text-gray-900"
                 />
               </div>
 
@@ -139,6 +141,7 @@ export default function AlertsPage() {
                   value={formData.chatId}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, chatId: e.target.value })}
                   required
+                  className="text-gray-900"
                 />
               </div>
 
@@ -149,6 +152,7 @@ export default function AlertsPage() {
                   type="number"
                   value={formData.threadId}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, threadId: e.target.value })}
+                  className="text-gray-900"
                 />
               </div>
 
@@ -159,7 +163,15 @@ export default function AlertsPage() {
                   onValueChange={(value: AlertType) => setFormData({ ...formData, alertType: value })}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select alert type" className="text-sm text-gray-500" />
+                    <SelectValue
+                      placeholder="Select alert type"
+                      className={cn(
+                        "text-sm",
+                        formData.alertType === "info" && "text-green-500",
+                        formData.alertType === "warning" && "text-orange-500",
+                        formData.alertType === "error" && "text-red-500"
+                      )}
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="info" className="text-sm text-green-500">Info</SelectItem>

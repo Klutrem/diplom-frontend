@@ -35,9 +35,8 @@ export default function Sidebar() {
             <li>
               <Link href="/">
                 <span
-                  className={`block p-2 text-gray-600 hover:bg-gray-200 rounded-md ${
-                    pathname === '/' ? 'bg-gray-300' : ''
-                  }`}
+                  className={`block p-2 text-gray-600 hover:bg-gray-200 rounded-md ${pathname === '/' ? 'bg-gray-300' : ''
+                    }`}
                 >
                   Nodes
                 </span>
@@ -46,9 +45,8 @@ export default function Sidebar() {
             <li>
               <Link href="/events">
                 <span
-                  className={`block p-2 text-gray-600 hover:bg-gray-200 rounded-md ${
-                    pathname === '/events' ? 'bg-gray-300' : ''
-                  }`}
+                  className={`block p-2 text-gray-600 hover:bg-gray-200 rounded-md ${pathname === '/events' ? 'bg-gray-300' : ''
+                    }`}
                 >
                   Events
                 </span>
@@ -57,11 +55,20 @@ export default function Sidebar() {
             <li>
               <Link href="/pods">
                 <span
-                  className={`block p-2 text-gray-600 hover:bg-gray-200 rounded-md ${
-                    pathname === '/pods' ? 'bg-gray-300' : ''
-                  }`}
+                  className={`block p-2 text-gray-600 hover:bg-gray-200 rounded-md ${pathname === '/pods' ? 'bg-gray-300' : ''
+                    }`}
                 >
                   Pods
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link href="/alerts">
+                <span
+                  className={`block p-2 text-gray-600 hover:bg-gray-200 rounded-md ${pathname === '/alerts' ? 'bg-gray-300' : ''
+                    }`}
+                >
+                  Alerts
                 </span>
               </Link>
             </li>

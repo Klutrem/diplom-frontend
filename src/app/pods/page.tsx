@@ -4,6 +4,7 @@ import Head from "next/head";
 import Table from "@/components/table";
 import { useNamespace } from "@/components/namespaceContext";
 import { getPods, type Pod } from "@/app/actions/pods";
+import Link from "next/link";
 
 export default function Pods() {
   const [pods, setPods] = useState<Pod[]>([]);
@@ -63,7 +64,18 @@ export default function Pods() {
   };
 
   const columns = [
-    { key: "pod_name" as keyof Pod, header: "Pod Name" },
+    { 
+      key: "pod_name" as keyof Pod, 
+      header: "Pod Name",
+      render: (value: string | number, item: Pod) => (
+        <Link 
+          href={`/pods/${value}/metrics`}
+          className="text-blue-600 hover:text-blue-800 hover:underline"
+        >
+          {value}
+        </Link>
+      )
+    },
     { 
       key: "status" as keyof Pod, 
       header: "Status", 

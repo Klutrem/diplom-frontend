@@ -17,10 +17,10 @@ export default function AlertsPage() {
   const [alerts, setAlerts] = useState<TelegramAlert[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
-    botToken: "",
-    chatId: "",
-    threadId: "",
-    alertType: "info" as AlertType,
+    bot_token: "",
+    chat_id: "",
+    thread_id: "",
+    alert_type: "info" as AlertType,
   });
 
   useEffect(() => {
@@ -59,7 +59,7 @@ export default function AlertsPage() {
 
     const { error } = await createAlert({
       ...formData,
-      threadId: formData.threadId ? parseInt(formData.threadId) : undefined,
+      thread_id: formData.thread_id ? parseInt(formData.thread_id) : undefined,
       namespace: selectedNamespace,
     });
 
@@ -74,10 +74,10 @@ export default function AlertsPage() {
 
     // Reset form
     setFormData({
-      botToken: "",
-      chatId: "",
-      threadId: "",
-      alertType: "info",
+      bot_token: "",
+      chat_id: "",
+      thread_id: "",
+      alert_type: "normal",
     });
   };
 
@@ -127,8 +127,8 @@ export default function AlertsPage() {
                 <Label htmlFor="botToken" className="text-sm text-gray-500">Bot Token</Label>
                 <Input
                   id="botToken"
-                  value={formData.botToken}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, botToken: e.target.value })}
+                  value={formData.bot_token}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, bot_token: e.target.value })}
                   required
                   className="text-gray-900"
                 />
@@ -138,8 +138,8 @@ export default function AlertsPage() {
                 <Label htmlFor="chatId" className="text-sm text-gray-500">Chat ID</Label>
                 <Input
                   id="chatId"
-                  value={formData.chatId}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, chatId: e.target.value })}
+                  value={formData.chat_id}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, chat_id: e.target.value })}
                   required
                   className="text-gray-900"
                 />
@@ -150,8 +150,8 @@ export default function AlertsPage() {
                 <Input
                   id="threadId"
                   type="number"
-                  value={formData.threadId}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, threadId: e.target.value })}
+                  value={formData.thread_id}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, thread_id: e.target.value })}
                   className="text-gray-900"
                 />
               </div>
@@ -159,24 +159,24 @@ export default function AlertsPage() {
               <div className="space-y-2">
                 <Label htmlFor="alertType" className="text-sm text-gray-500">Alert Type</Label>
                 <Select
-                  value={formData.alertType}
-                  onValueChange={(value: AlertType) => setFormData({ ...formData, alertType: value })}
+                  value={formData.alert_type}
+                  onValueChange={(value: AlertType) => setFormData({ ...formData, alert_type: value })}
                 >
                   <SelectTrigger>
                     <SelectValue
                       placeholder="Select alert type"
                       className={cn(
                         "text-sm",
-                        formData.alertType === "info" && "text-green-500",
-                        formData.alertType === "warning" && "text-orange-500",
-                        formData.alertType === "error" && "text-red-500"
+                        formData.alert_type === "normal" && "text-green-500",
+                        formData.alert_type === "warning" && "text-orange-500",
+                        formData.alert_type === "all" && "text-blue-500"
                       )}
                     />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="info" className="text-sm text-green-500">Info</SelectItem>
+                    <SelectItem value="normal" className="text-sm text-green-500">Normal</SelectItem>
                     <SelectItem value="warning" className="text-sm text-orange-500">Warning</SelectItem>
-                    <SelectItem value="error" className="text-sm text-red-500">Error</SelectItem>
+                    <SelectItem value="all" className="text-sm text-blue-500">All</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -208,10 +208,10 @@ export default function AlertsPage() {
                   <div className="flex items-center space-x-4">
                     <AlertCircle className="h-5 w-5" />
                     <div>
-                      <p className="font-medium">Chat ID: {alert.chatId}</p>
+                      <p className="font-medium">Chat ID: {alert.chat_id}</p>
                       <p className="text-sm text-gray-500">
-                        Type: {alert.alertType}
-                        {alert.threadId && ` • Thread: ${alert.threadId}`}
+                        Type: {alert.alert_type}
+                        {alert.thread_id && ` • Thread: ${alert.thread_id}`}
                       </p>
                     </div>
                   </div>

@@ -2,15 +2,15 @@
 
 import getConfig from "@/config";
 
-export type AlertType = "error" | "warning" | "info";
+export type AlertType = "all" | "warning" | "normal";
 
 export interface TelegramAlert {
   id: number;
-  chatId: string;
-  threadId?: number;
-  alertType: AlertType;
+  chat_id: string;
+  thread_id?: number;
+  alert_type: AlertType;
   namespace: string;
-  createdAt: string;
+  created_at: string;
 }
 
 export interface AlertsResponse {
@@ -19,27 +19,27 @@ export interface AlertsResponse {
 }
 
 export interface CreateAlertData {
-  botToken: string;
-  chatId: string;
-  threadId?: number;
-  alertType: AlertType;
+  bot_token: string;
+  chat_id: string;
+  thread_id?: number;
+  alert_type: AlertType;
   namespace: string;
 }
 
 export async function getAlertsByNamespace(namespace: string) {
   try {
     const response = await fetch(`${getConfig().backendBaseUrl}/api/alerts/namespace/${namespace}`);
-    
+
     if (!response.ok) {
       throw new Error("Failed to fetch alerts");
     }
-    
+
     const data: AlertsResponse = await response.json();
     return { alerts: data.alerts || [], error: null };
   } catch (err) {
-    return { 
-      alerts: [], 
-      error: err instanceof Error ? err.message : "Unknown error" 
+    return {
+      alerts: [],
+      error: err instanceof Error ? err.message : "Unknown error"
     };
   }
 }
@@ -53,15 +53,15 @@ export async function createAlert(data: CreateAlertData) {
       },
       body: JSON.stringify(data),
     });
-    
+
     if (!response.ok) {
       throw new Error("Failed to create alert");
     }
-    
+
     return { error: null };
   } catch (err) {
-    return { 
-      error: err instanceof Error ? err.message : "Unknown error" 
+    return {
+      error: err instanceof Error ? err.message : "Unknown error"
     };
   }
 }
@@ -71,15 +71,15 @@ export async function deleteAlert(id: number) {
     const response = await fetch(`${getConfig().backendBaseUrl}/api/alerts/${id}`, {
       method: 'DELETE',
     });
-    
+
     if (!response.ok) {
       throw new Error("Failed to delete alert");
     }
-    
+
     return { error: null };
   } catch (err) {
-    return { 
-      error: err instanceof Error ? err.message : "Unknown error" 
+    return {
+      error: err instanceof Error ? err.message : "Unknown error"
     };
   }
 } 

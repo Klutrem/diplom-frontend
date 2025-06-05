@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import Head from "next/head";
 import Table from "@/components/table";
 import { useNamespace } from "@/components/namespaceContext";
-import { getPods, type Pod } from "@/app/actions/pods";
 import Link from "next/link";
+import { getPods, Pod } from "../actions/pods";
 
 export default function Pods() {
   const [pods, setPods] = useState<Pod[]>([]);
@@ -64,11 +64,11 @@ export default function Pods() {
   };
 
   const columns = [
-    { 
-      key: "pod_name" as keyof Pod, 
+    {
+      key: "pod_name" as keyof Pod,
       header: "Pod Name",
       render: (value: string | number, item: Pod) => (
-        <Link 
+        <Link
           href={`/pods/${value}/metrics`}
           className="text-blue-600 hover:text-blue-800 hover:underline"
         >
@@ -76,22 +76,21 @@ export default function Pods() {
         </Link>
       )
     },
-    { 
-      key: "status" as keyof Pod, 
-      header: "Status", 
+    {
+      key: "status" as keyof Pod,
+      header: "Status",
       render: (value: string | number, item: Pod) => (
         <span
-          className={`py-1 px-3 rounded-full text-xs ${
-            value === "Running"
-              ? "bg-green-200 text-green-800"
-              : value === "Pending"
+          className={`py-1 px-3 rounded-full text-xs ${value === "Running"
+            ? "bg-green-200 text-green-800"
+            : value === "Pending"
               ? "bg-yellow-200 text-yellow-800"
               : value === "Succeeded"
-              ? "bg-blue-200 text-blue-800"
-              : value === "Failed"
-              ? "bg-red-200 text-red-800"
-              : "bg-gray-200 text-gray-800"
-          }`}
+                ? "bg-blue-200 text-blue-800"
+                : value === "Failed"
+                  ? "bg-red-200 text-red-800"
+                  : "bg-gray-200 text-gray-800"
+            }`}
         >
           {value}
         </span>
@@ -99,30 +98,30 @@ export default function Pods() {
     },
     { key: "namespace" as keyof Pod, header: "Namespace" },
     { key: "node_name" as keyof Pod, header: "Node" },
-    { 
-      key: "start_time" as keyof Pod, 
-      header: "Uptime", 
-      render: (value: string | number, item: Pod) => formatUptime(value as string) 
+    {
+      key: "start_time" as keyof Pod,
+      header: "Uptime",
+      render: (value: string | number, item: Pod) => formatUptime(value as string)
     },
-    { 
-      key: "cpu_usage" as keyof Pod, 
-      header: "CPU Usage", 
+    {
+      key: "cpu_usage" as keyof Pod,
+      header: "CPU Usage",
       render: (value: string | number, item: Pod) =>
         formatUsage(
-          value as number, 
-          item.cpu_usage_limit, 
-          item.cpu_usage_request, 
+          value as number,
+          item.cpu_usage_limit,
+          item.cpu_usage_request,
           item.cpu_usage_percent
         )
     },
-    { 
-      key: "memory_usage" as keyof Pod, 
-      header: "Memory Usage", 
+    {
+      key: "memory_usage" as keyof Pod,
+      header: "Memory Usage",
       render: (value: string | number, item: Pod) =>
         formatUsage(
-          value as number, 
-          item.memory_usage_limit, 
-          item.memory_usage_request, 
+          value as number,
+          item.memory_usage_limit,
+          item.memory_usage_request,
           item.memory_usage_percent
         )
     },

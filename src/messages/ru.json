@@ -1,0 +1,38 @@
+{
+    "navigation": {
+        "dashboard": "Панель мониторинга",
+        "nodes": "Узлы",
+        "pods": "Поды",
+        "alerts": "Оповещения",
+        "events": "События"
+    },
+    "common": {
+        "loading": "Загрузка...",
+        "error": "Ошибка: {message}",
+        "name": "Имя",
+        "status": "Статус",
+        "roles": "Роли",
+        "cpuUsage": "Использование CPU",
+        "memoryUsage": "Использование памяти",
+        "ready": "Готов",
+        "notReady": "Не готов",
+        "namespace": "Пространство имен"
+    },
+    "nodes": {
+        "title": "Узлы",
+        "metrics": "Метрики",
+        "details": "Детали узла"
+    },
+    "pods": {
+        "title": "Поды",
+        "details": "Детали пода"
+    },
+    "alerts": {
+        "title": "Оповещения",
+        "details": "Детали оповещения"
+    },
+    "events": {
+        "title": "События",
+        "details": "Детали события"
+    }
+}

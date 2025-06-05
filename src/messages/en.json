@@ -1,0 +1,38 @@
+{
+    "navigation": {
+        "dashboard": "Monitoring Dashboard",
+        "nodes": "Nodes",
+        "pods": "Pods",
+        "alerts": "Alerts",
+        "events": "Events"
+    },
+    "common": {
+        "loading": "Loading...",
+        "error": "Error: {message}",
+        "name": "Name",
+        "status": "Status",
+        "roles": "Roles",
+        "cpuUsage": "CPU Usage",
+        "memoryUsage": "Memory Usage",
+        "ready": "Ready",
+        "notReady": "Not Ready",
+        "namespace": "Namespace"
+    },
+    "nodes": {
+        "title": "Nodes",
+        "metrics": "Metrics",
+        "details": "Node Details"
+    },
+    "pods": {
+        "title": "Pods",
+        "details": "Pod Details"
+    },
+    "alerts": {
+        "title": "Alerts",
+        "details": "Alert Details"
+    },
+    "events": {
+        "title": "Events",
+        "details": "Event Details"
+    }
+}

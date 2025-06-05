@@ -95,27 +95,27 @@ export default function AlertsPage() {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-8">Алерты в Telegram</h1>
+      <h1 className="text-3xl font-bold mb-8 text-center text-gray-900">Алерты в Telegram</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm text-gray-700">Создать новое оповещение</CardTitle>
+            <CardTitle className="text-base text-gray-900">Создать новое оповещение</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="namespace" className="text-sm text-gray-500">Namespace</Label>
+                <Label htmlFor="namespace" className="text-sm font-medium text-gray-900">Namespace</Label>
                 <Select
                   value={selectedNamespace}
                   onValueChange={setSelectedNamespace}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select namespace" className="text-sm text-gray-900" />
+                    <SelectValue placeholder="Select namespace" className="text-sm font-medium text-gray-900" />
                   </SelectTrigger>
                   <SelectContent>
                     {namespaces.map((ns, index) => (
-                      <SelectItem className="text-sm text-gray-900" key={`namespace-${index}`} value={ns || `default-${index}`}>
+                      <SelectItem className="text-sm font-medium text-gray-900" key={`namespace-${index}`} value={ns || `default-${index}`}>
                         {ns}
                       </SelectItem>
                     ))}
@@ -124,7 +124,7 @@ export default function AlertsPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="botToken" className="text-sm text-gray-500">Токен бота</Label>
+                <Label htmlFor="botToken" className="text-sm font-medium text-gray-900">Токен бота</Label>
                 <Input
                   id="botToken"
                   value={formData.bot_token}
@@ -135,7 +135,7 @@ export default function AlertsPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="chatId" className="text-sm text-gray-500">ID чата</Label>
+                <Label htmlFor="chatId" className="text-sm font-medium text-gray-900">ID чата</Label>
                 <Input
                   id="chatId"
                   value={formData.chat_id}
@@ -146,7 +146,7 @@ export default function AlertsPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="threadId" className="text-sm text-gray-500">ID потока (необязательно)</Label>
+                <Label htmlFor="threadId" className="text-sm font-medium text-gray-900">ID потока (необязательно)</Label>
                 <Input
                   id="threadId"
                   type="number"
@@ -157,7 +157,7 @@ export default function AlertsPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="alertType" className="text-sm text-gray-500">Тип оповещения</Label>
+                <Label htmlFor="alertType" className="text-sm font-medium text-gray-900">Тип оповещения</Label>
                 <Select
                   value={formData.alert_type}
                   onValueChange={(value: AlertType) => setFormData({ ...formData, alert_type: value })}
@@ -166,17 +166,17 @@ export default function AlertsPage() {
                     <SelectValue
                       placeholder="Выберите тип оповещения"
                       className={cn(
-                        "text-sm",
-                        formData.alert_type === "normal" && "text-green-500",
-                        formData.alert_type === "warning" && "text-orange-500",
-                        formData.alert_type === "all" && "text-blue-500"
+                        "text-sm font-medium",
+                        formData.alert_type === "normal" && "text-green-600",
+                        formData.alert_type === "warning" && "text-orange-600",
+                        formData.alert_type === "all" && "text-blue-600"
                       )}
                     />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="normal" className="text-sm text-green-500">Обычный</SelectItem>
-                    <SelectItem value="warning" className="text-sm text-orange-500">Предупреждение</SelectItem>
-                    <SelectItem value="all" className="text-sm text-blue-500">Все</SelectItem>
+                    <SelectItem value="normal" className="text-sm font-medium text-green-600">Обычный</SelectItem>
+                    <SelectItem value="warning" className="text-sm font-medium text-orange-600">Предупреждение</SelectItem>
+                    <SelectItem value="all" className="text-sm font-medium text-blue-600">Все</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -190,7 +190,7 @@ export default function AlertsPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Активные оповещения</CardTitle>
+            <CardTitle className="text-base text-gray-900">Активные оповещения</CardTitle>
           </CardHeader>
           <CardContent>
             {error && (
@@ -208,8 +208,8 @@ export default function AlertsPage() {
                   <div className="flex items-center space-x-4">
                     <AlertCircle className="h-5 w-5" />
                     <div>
-                      <p className="font-medium">ID чата: {alert.chat_id}</p>
-                      <p className="text-sm text-gray-500">
+                      <p className="font-medium text-gray-900">ID чата: {alert.chat_id}</p>
+                      <p className="text-sm text-gray-700">
                         Тип: {alert.alert_type}
                         {alert.thread_id && ` • ID потока: ${alert.thread_id}`}
                       </p>

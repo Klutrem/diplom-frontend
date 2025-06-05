@@ -33,7 +33,7 @@ function SidebarContent({
   setSelectedNamespace: (ns: string) => void;
 }) {
   const locale = useLocale();
-  const t = useTranslations();
+  const t = useTranslations("navigation");
 
   const isActive = (path: string) => {
     const currentPath = pathname || '';

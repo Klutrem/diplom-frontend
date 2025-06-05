@@ -1,9 +1,8 @@
+// i18n.ts
 import { getRequestConfig } from 'next-intl/server';
-import type { GetRequestConfigParams } from 'next-intl/server';
 
-export default getRequestConfig(async ({ locale }: GetRequestConfigParams) => ({
+export default getRequestConfig(async ({ locale }) => ({
     locale: locale || 'en',
-    messages: (await import(`../messages/${locale || 'en'}.json`)).default,
-    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    now: new Date(),
+    messages: (await import(`../messages/${locale}.json`)).default,
+    timeZone: 'Europe/Moscow',
 }));

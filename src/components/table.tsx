@@ -17,7 +17,7 @@ export default function Table<T>({ title, data, columns, responsive = false }: T
   return (
     <div className={`container mx-auto p-4 ${responsive ? 'max-w-full' : ''}`}>
       <h1 className="text-3xl font-bold mb-6 text-center text-black">{title}</h1>
-      <div className={`overflow-x-auto ${responsive ? 'md:overflow-x-visible' : ''}`}>
+      <div className={`${responsive ? 'md:overflow-x-visible' : ''}`}>
         <table className={`min-w-full max-w-full bg-white shadow-md rounded-lg ${responsive ? 'table-auto' : ''}`}>
           <thead>
             <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">

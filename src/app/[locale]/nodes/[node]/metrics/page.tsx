@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { getNodeMetrics, type NodeMetrics, type MetricPoint } from "@/app/actions/nodes";
+
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -16,6 +16,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import "chartjs-adapter-date-fns";
+import { getNodeMetrics, MetricPoint, NodeMetrics } from "@/app/[locale]/actions/nodes";
 
 ChartJS.register(
     CategoryScale,
@@ -28,7 +29,7 @@ ChartJS.register(
     TimeScale
 );
 
-export default function NodeMetrics() {
+export default function NodeMetricsPage() {
     const params = useParams();
     const [metrics, setMetrics] = useState<NodeMetrics | null>(null);
     const [loading, setLoading] = useState(true);

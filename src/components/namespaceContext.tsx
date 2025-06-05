@@ -1,6 +1,6 @@
 "use client"
 import { createContext, useState, useEffect, useContext } from 'react';
-import { getNamespaces } from '@/app/actions/namespaces';
+import { getNamespaces } from '../app/[locale]/actions/namespaces';
 
 interface NamespaceContextType {
   namespaces: string[];

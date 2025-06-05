@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import Table from "@/components/table";
-import { getNodes, type Node } from "@/app/actions/nodes";
+import { getNodes, Node } from "./[locale]/actions/nodes";
 import Link from "next/link";
 
 export default function Home() {

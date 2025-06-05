@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useNamespace } from "@/components/namespaceContext";
-import { getPodMetrics, type PodMetrics } from "@/app/actions/pods";
+import { getPodMetrics, PodMetrics } from "@/app/[locale]/actions/pods";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -29,7 +29,7 @@ ChartJS.register(
   TimeScale
 );
 
-export default function PodMetrics() {
+export default function PodMetricsPage() {
   const params = useParams();
   const { selectedNamespace } = useNamespace();
   const [metrics, setMetrics] = useState<PodMetrics | null>(null);

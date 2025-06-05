@@ -42,7 +42,7 @@ export default function Events() {
   const handleToggleWatchedNamespace = async (namespace: string) => {
     const isWatched = watchedNamespaces.includes(namespace);
     const action = isWatched ? removeWatchedNamespace : addWatchedNamespace;
-    
+
     const result = await action(namespace);
     if (result.error) {
       console.error(result.error);
@@ -50,8 +50,8 @@ export default function Events() {
     }
 
     // Update local state
-    setWatchedNamespaces(prev => 
-      isWatched 
+    setWatchedNamespaces(prev =>
+      isWatched
         ? prev.filter(ns => ns !== namespace)
         : [...prev, namespace]
     );
@@ -75,13 +75,12 @@ export default function Events() {
       header: "Тип",
       render: (value: string | number, item: Event) => (
         <span
-          className={`py-1 px-3 rounded-full text-xs ${
-            value === "Normal"
+          className={`py-1 px-3 rounded-full text-xs ${value === "Normal"
               ? "bg-green-200 text-green-800"
               : value === "Warning"
-              ? "bg-yellow-200 text-yellow-800"
-              : "bg-gray-200 text-gray-800"
-          }`}
+                ? "bg-yellow-200 text-yellow-800"
+                : "bg-gray-200 text-gray-800"
+            }`}
         >
           {value}
         </span>
@@ -136,11 +135,10 @@ export default function Events() {
                 <button
                   key={namespace}
                   onClick={() => handleToggleWatchedNamespace(namespace)}
-                  className={`px-3 py-1 rounded-full text-sm ${
-                    watchedNamespaces.includes(namespace)
+                  className={`px-3 py-1 rounded-full text-sm ${watchedNamespaces.includes(namespace)
                       ? "bg-blue-500 text-white hover:bg-blue-600"
                       : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                  }`}
+                    }`}
                 >
                   {namespace}
                 </button>
@@ -152,7 +150,7 @@ export default function Events() {
         {loading && <p className="text-center">Загрузка...</p>}
         {error && <p className="text-red-500 text-center">Ошибка: {error}</p>}
         {!loading && !error && (
-          <Table title="Events" data={events} columns={columns} />
+          <Table title="События" data={events} columns={columns} />
         )}
       </div>
     </>

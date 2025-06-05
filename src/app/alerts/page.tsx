@@ -95,12 +95,12 @@ export default function AlertsPage() {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-8">Telegram Alerts</h1>
+      <h1 className="text-3xl font-bold mb-8">Алерты в Telegram</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm text-gray-700">Create New Alert</CardTitle>
+            <CardTitle className="text-sm text-gray-700">Создать новое оповещение</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -124,7 +124,7 @@ export default function AlertsPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="botToken" className="text-sm text-gray-500">Bot Token</Label>
+                <Label htmlFor="botToken" className="text-sm text-gray-500">Токен бота</Label>
                 <Input
                   id="botToken"
                   value={formData.bot_token}
@@ -135,7 +135,7 @@ export default function AlertsPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="chatId" className="text-sm text-gray-500">Chat ID</Label>
+                <Label htmlFor="chatId" className="text-sm text-gray-500">ID чата</Label>
                 <Input
                   id="chatId"
                   value={formData.chat_id}
@@ -146,7 +146,7 @@ export default function AlertsPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="threadId" className="text-sm text-gray-500">Thread ID (Optional)</Label>
+                <Label htmlFor="threadId" className="text-sm text-gray-500">ID потока (необязательно)</Label>
                 <Input
                   id="threadId"
                   type="number"
@@ -157,14 +157,14 @@ export default function AlertsPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="alertType" className="text-sm text-gray-500">Alert Type</Label>
+                <Label htmlFor="alertType" className="text-sm text-gray-500">Тип оповещения</Label>
                 <Select
                   value={formData.alert_type}
                   onValueChange={(value: AlertType) => setFormData({ ...formData, alert_type: value })}
                 >
                   <SelectTrigger>
                     <SelectValue
-                      placeholder="Select alert type"
+                      placeholder="Выберите тип оповещения"
                       className={cn(
                         "text-sm",
                         formData.alert_type === "normal" && "text-green-500",
@@ -174,15 +174,15 @@ export default function AlertsPage() {
                     />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="normal" className="text-sm text-green-500">Normal</SelectItem>
-                    <SelectItem value="warning" className="text-sm text-orange-500">Warning</SelectItem>
-                    <SelectItem value="all" className="text-sm text-blue-500">All</SelectItem>
+                    <SelectItem value="normal" className="text-sm text-green-500">Обычный</SelectItem>
+                    <SelectItem value="warning" className="text-sm text-orange-500">Предупреждение</SelectItem>
+                    <SelectItem value="all" className="text-sm text-blue-500">Все</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <Button type="submit" className="w-full bg-blue-500 text-white hover:bg-blue-600">
-                Create Alert
+                Создать оповещение
               </Button>
             </form>
           </CardContent>
@@ -190,7 +190,7 @@ export default function AlertsPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Active Alerts</CardTitle>
+            <CardTitle>Активные оповещения</CardTitle>
           </CardHeader>
           <CardContent>
             {error && (
@@ -208,10 +208,10 @@ export default function AlertsPage() {
                   <div className="flex items-center space-x-4">
                     <AlertCircle className="h-5 w-5" />
                     <div>
-                      <p className="font-medium">Chat ID: {alert.chat_id}</p>
+                      <p className="font-medium">ID чата: {alert.chat_id}</p>
                       <p className="text-sm text-gray-500">
-                        Type: {alert.alert_type}
-                        {alert.thread_id && ` • Thread: ${alert.thread_id}`}
+                        Тип: {alert.alert_type}
+                        {alert.thread_id && ` • ID потока: ${alert.thread_id}`}
                       </p>
                     </div>
                   </div>

@@ -64,11 +64,11 @@ export default function Pods() {
   };
 
   const columns = [
-    { 
-      key: "pod_name" as keyof Pod, 
-      header: "Pod Name",
+    {
+      key: "pod_name" as keyof Pod,
+      header: "Имя пода",
       render: (value: string | number, item: Pod) => (
-        <Link 
+        <Link
           href={`/pods/${value}/metrics`}
           className="text-blue-600 hover:text-blue-800 hover:underline"
         >
@@ -76,69 +76,68 @@ export default function Pods() {
         </Link>
       )
     },
-    { 
-      key: "status" as keyof Pod, 
-      header: "Status", 
+    {
+      key: "status" as keyof Pod,
+      header: "Статус",
       render: (value: string | number, item: Pod) => (
         <span
-          className={`py-1 px-3 rounded-full text-xs ${
-            value === "Running"
-              ? "bg-green-200 text-green-800"
-              : value === "Pending"
+          className={`py-1 px-3 rounded-full text-xs ${value === "Running"
+            ? "bg-green-200 text-green-800"
+            : value === "Pending"
               ? "bg-yellow-200 text-yellow-800"
               : value === "Succeeded"
-              ? "bg-blue-200 text-blue-800"
-              : value === "Failed"
-              ? "bg-red-200 text-red-800"
-              : "bg-gray-200 text-gray-800"
-          }`}
+                ? "bg-blue-200 text-blue-800"
+                : value === "Failed"
+                  ? "bg-red-200 text-red-800"
+                  : "bg-gray-200 text-gray-800"
+            }`}
         >
           {value}
         </span>
       )
     },
-    { key: "namespace" as keyof Pod, header: "Namespace" },
-    { key: "node_name" as keyof Pod, header: "Node" },
-    { 
-      key: "start_time" as keyof Pod, 
-      header: "Uptime", 
-      render: (value: string | number, item: Pod) => formatUptime(value as string) 
+    { key: "namespace" as keyof Pod, header: "Пространство имен" },
+    { key: "node_name" as keyof Pod, header: "Узел" },
+    {
+      key: "start_time" as keyof Pod,
+      header: "Время работы",
+      render: (value: string | number, item: Pod) => formatUptime(value as string)
     },
-    { 
-      key: "cpu_usage" as keyof Pod, 
-      header: "CPU Usage", 
+    {
+      key: "cpu_usage" as keyof Pod,
+      header: "Загрузка CPU",
       render: (value: string | number, item: Pod) =>
         formatUsage(
-          value as number, 
-          item.cpu_usage_limit, 
-          item.cpu_usage_request, 
+          value as number,
+          item.cpu_usage_limit,
+          item.cpu_usage_request,
           item.cpu_usage_percent
         )
     },
-    { 
-      key: "memory_usage" as keyof Pod, 
-      header: "Memory Usage", 
+    {
+      key: "memory_usage" as keyof Pod,
+      header: "Загрузка памяти",
       render: (value: string | number, item: Pod) =>
         formatUsage(
-          value as number, 
-          item.memory_usage_limit, 
-          item.memory_usage_request, 
+          value as number,
+          item.memory_usage_limit,
+          item.memory_usage_request,
           item.memory_usage_percent
         )
     },
-    { key: "restart_count" as keyof Pod, header: "Restart Count" },
+    { key: "restart_count" as keyof Pod, header: "Количество перезапусков" },
   ];
 
   return (
     <>
       <Head>
-        <title>Pods Monitoring</title>
+        <title>Мониторинг под</title>
         <meta name="description" content="Pods monitoring dashboard" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {loading && <p className="text-center">Loading...</p>}
       {error && <p className="text-red-500 text-center">Error: {error}</p>}
-      {!loading && !error && <Table title="Pods" data={pods} columns={columns} />}
+      {!loading && !error && <Table title="Поды" data={pods} columns={columns} />}
     </>
   );
 }

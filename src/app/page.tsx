@@ -25,7 +25,7 @@ export default function Home() {
   const columns = [
     {
       key: "name" as keyof Node,
-      header: "Name",
+      header: "Имя",
       render: (value: string | string[], item: Node) => (
         <Link
           href={`/nodes/${value}/metrics`}
@@ -37,7 +37,7 @@ export default function Home() {
     },
     {
       key: "status" as keyof Node,
-      header: "Status",
+      header: "Статус",
       render: (value: string | string[], item: Node) => (
         <span
           className={`py-1 px-3 rounded-full text-xs ${value === "Ready" ? "bg-green-200 text-green-800" : "bg-red-200 text-red-800"
@@ -49,19 +49,19 @@ export default function Home() {
     },
     {
       key: "roles" as keyof Node,
-      header: "Roles",
+      header: "Роли",
       render: (value: string | string[], item: Node) => (value as string[]).join(", ")
     },
     {
       key: "cpu_usage" as keyof Node,
-      header: "CPU Usage",
+      header: "Загрузка CPU",
       render: (value: string | string[], item: Node) => (
         `${value} / ${item.cpu_capacity} (${item.cpu_usage_percentage}%)`
       )
     },
     {
       key: "memory_usage" as keyof Node,
-      header: "Memory Usage",
+      header: "Загрузка памяти",
       render: (value: string | string[], item: Node) => (
         `${value} / ${item.memory_capacity} (${item.memory_usage_percentage}%)`
       )
@@ -71,13 +71,13 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Nodes Monitoring</title>
+        <title>Мониторинг нод</title>
         <meta name="description" content="Nodes monitoring dashboard" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {loading && <p className="text-center">Loading...</p>}
       {error && <p className="text-red-500 text-center">Error: {error}</p>}
-      {!loading && !error && <Table title="Nodes" data={nodes} columns={columns} />}
+      {!loading && !error && <Table title="Ноды" data={nodes} columns={columns} />}
     </>
   );
 }

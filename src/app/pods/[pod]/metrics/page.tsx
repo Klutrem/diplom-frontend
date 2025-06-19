@@ -145,12 +145,12 @@ export default function PodMetrics() {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4 text-gray-900">
-        Metrics for Pod: {params.pod}
+        Метрики пода: {params.pod}
       </h1>
       <div className="mb-4 bg-white p-4 rounded-lg shadow">
         <div className="grid grid-cols-4 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Начало</label>
             <input
               type="datetime-local"
               value={timeRange.start.toISOString().slice(0, 16)}
@@ -159,7 +159,7 @@ export default function PodMetrics() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">End Time</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Конец</label>
             <input
               type="datetime-local"
               value={timeRange.end.toISOString().slice(0, 16)}
@@ -168,7 +168,7 @@ export default function PodMetrics() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Step Interval</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Интервал</label>
             <select
               value={timeRange.step}
               onChange={(e) => handleTimeRangeChange('step', e.target.value)}
@@ -188,18 +188,18 @@ export default function PodMetrics() {
                 onChange={(e) => setIsAutoStep(e.target.checked)}
                 className="rounded"
               />
-              <span className="text-sm font-medium text-gray-700">Auto Step</span>
+              <span className="text-sm font-medium text-gray-700">Автоматический интервал</span>
             </label>
           </div>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div className="bg-white p-4 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-2 text-gray-900">CPU Usage</h2>
+          <h2 className="text-xl font-semibold mb-2 text-gray-900">Использование процессора</h2>
           <Line data={cpuData} options={chartOptions} />
         </div>
         <div className="bg-white p-4 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-2 text-gray-900">Memory Usage</h2>
+          <h2 className="text-xl font-semibold mb-2 text-gray-900">Использование памяти</h2>
           <Line data={memoryData} options={chartOptions} />
         </div>
       </div>

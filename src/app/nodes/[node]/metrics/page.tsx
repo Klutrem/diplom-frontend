@@ -141,7 +141,7 @@ export default function NodeMetrics() {
     return (
         <div className="p-4">
             <h1 className="text-2xl font-bold mb-4 text-gray-900">
-                Metrics for Node: {params.node}
+                Метрики узла: {params.node}
             </h1>
             <div className="mb-4 bg-white p-4 rounded-lg shadow">
                 <div className="grid grid-cols-4 gap-4">

@@ -10,11 +10,11 @@ export default function Sidebar() {
   return (
     <aside className="w-64 bg-white shadow-md h-screen fixed top-0 left-0">
       <div className="p-4">
-        <h2 className="text-xl font-bold text-gray-800 mb-6">Monitoring Dashboard</h2>
+        <h2 className="text-xl font-bold text-gray-800 mb-6">Панель мониторинга</h2>
 
         <div className="mb-6">
           <label htmlFor="namespace" className="block text-sm font-medium text-gray-700 mb-2">
-            Namespace
+            Пространство имён
           </label>
           <select
             id="namespace"
@@ -38,7 +38,7 @@ export default function Sidebar() {
                   className={`block p-2 text-gray-600 hover:bg-gray-200 rounded-md ${pathname === '/' ? 'bg-gray-300' : ''
                     }`}
                 >
-                  Nodes
+                  Узлы
                 </span>
               </Link>
             </li>
@@ -48,7 +48,7 @@ export default function Sidebar() {
                   className={`block p-2 text-gray-600 hover:bg-gray-200 rounded-md ${pathname === '/events' ? 'bg-gray-300' : ''
                     }`}
                 >
-                  Events
+                  События
                 </span>
               </Link>
             </li>
@@ -58,7 +58,7 @@ export default function Sidebar() {
                   className={`block p-2 text-gray-600 hover:bg-gray-200 rounded-md ${pathname === '/pods' ? 'bg-gray-300' : ''
                     }`}
                 >
-                  Pods
+                  Поды
                 </span>
               </Link>
             </li>
@@ -68,7 +68,7 @@ export default function Sidebar() {
                   className={`block p-2 text-gray-600 hover:bg-gray-200 rounded-md ${pathname === '/alerts' ? 'bg-gray-300' : ''
                     }`}
                 >
-                  Alerts
+                  Алерты
                 </span>
               </Link>
             </li>
